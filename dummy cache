@@ -1,0 +1,11 @@
+dummy cahche
++--------------------------------------------------------+
+
+print("Points slotted for ellipse")
+print("---------------------- Ellipse Plot -----------------------")
+print(" +    X Position          ++          Y Position          +")
+print("-----------------------------------------------------------")
+for a,b in zip(ec_xpos,ec_ypos):
+    print("\t\t"+str(a)+"\t\t\t"+str(b))
+    time.sleep(0.1)
+os.system("clear")
