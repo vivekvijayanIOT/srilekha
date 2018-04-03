@@ -10,7 +10,7 @@ ec_xpos=[]
 ec_ypos=[]
 nodes=["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O"]
 node_path=[]
-
+# vive now updates
 
 def action():
     try:
