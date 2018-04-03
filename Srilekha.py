@@ -4,13 +4,17 @@ print("** Network Stimulation code starts **")
 import sys
 import os
 import time
+import math
 
-
+home=[]
+near=[]
 ec_xpos=[]
 ec_ypos=[]
 nodes=["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O"]
 node_path=[]
-# vive now updates
+
+set_x=[]
+set_y=[]
 
 def action():
     try:
@@ -29,27 +33,26 @@ class node:
     xpos=0
     ypos=0
     data_buffer=""
+    my_neigh=[]
+
     def __init__(self,x_pos,y_pos,name):
         global update_x
         global update_y
         self.xpos=x_pos
         self.ypos=y_pos
         self.name=name
-        my_neigh=[]
+
+    def add_node(self,n):
+        self.my_neigh.append(n)
 
     def add_neigh(self,n):
-
+        my_neigh.append(n)
 
     def setbuffer__(self,encrypt):
         self.data_buffer=encrypt
 
 # Creating Ellipse
 _init_=action()
-if _init_==True:
-    print("\tEllipse creation Success")
-else:
-    print("\t Error in Ellipse creation")
-    sys.exit()
 
 # node initialisation
 n1,n2,n3,n4,n5=node(0,-2,"A"),node(-1,-1,"B"),node(-2,2,"C"),node(-3,7,"D"),node(-4,14,"E")
@@ -62,8 +65,34 @@ def get_class(name):
     class_ID=nodes.index(name)
     return objects[class_ID]
 
-print(update_x)
-print(update_y)
+def _main_fun(ranges):
+    global home
+    global near
+    #node neighbour identification
+    if ranges<0:
+        print ("Invalid range")
+        sys.exit()
+    else:
+        for a in nodes:
+            row_class=get_class(a)
+            for b in nodes:
+                if row_class!=b:
+                    col_class=get_class(b)
+                    x1=row_class.xpos
+                    y1=row_class.ypos
+                    x2=col_class.xpos
+                    y2=col_class.ypos
+                    dist=float(math.sqrt((x2-x1)**2 + (y2-y1)**2))
+                    print("distance => "+str(dist))
+                    if dist < ranges and dist != 0.0:
+                        row_class.add_node(a)
+                        print(a+" adds =>" +b +" -----> its distance is "+str(dist))
+                        home.append(a)
+                        near.append(b)
+                        print(home)
+                        print(near)
+                        time.sleep(1)
+    
 
 # Main Execution
 print("\tNetwork Stimulation - Nodes : 15")
@@ -88,6 +117,10 @@ else:
     sys.exit()
 last_node=str(node_path[l-1])
 print("\t* PATH EXPLORED\n")
+ranges=float(input("Enter the range to identify"))
+_main_fun(ranges)
+
+'''
 node_range=input("Enter the node range: ")
 data=input("Enter the data to be transmited from NODE: "+str(node_path[0])+" to NODE: "+str(node_path[l-1])+" :\n")
 # data encryption starts here
@@ -157,3 +190,4 @@ try:
             time_slot(1)
 except:
     print("")
+    '''
