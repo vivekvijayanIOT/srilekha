@@ -1,6 +1,6 @@
 print("** Network Stimulation code starts **")
 # VivekIOT - Python code : date-> 24-3-2018
-# NS
+# NS - Srilekha
 import sys
 import os
 import time
@@ -10,6 +10,7 @@ ec_xpos=[]
 ec_ypos=[]
 nodes=["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O"]
 node_path=[]
+
 
 def action():
     try:
@@ -29,9 +30,12 @@ class node:
     ypos=0
     data_buffer=""
     def __init__(self,x_pos,y_pos,name):
+        global update_x
+        global update_y
         self.xpos=x_pos
         self.ypos=y_pos
         self.name=name
+        my_neigh=[]
 
     def setbuffer__(self,encrypt):
         self.data_buffer=encrypt
@@ -55,7 +59,8 @@ def get_class(name):
     class_ID=nodes.index(name)
     return objects[class_ID]
 
-
+print(update_x)
+print(update_y)
 
 # Main Execution
 print("\tNetwork Stimulation - Nodes : 15")
@@ -80,6 +85,7 @@ else:
     sys.exit()
 last_node=str(node_path[l-1])
 print("\t* PATH EXPLORED\n")
+node_range=input("Enter the node range: ")
 data=input("Enter the data to be transmited from NODE: "+str(node_path[0])+" to NODE: "+str(node_path[l-1])+" :\n")
 # data encryption starts here
 
