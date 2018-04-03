@@ -72,10 +72,40 @@ def show_my_table():
         print("Node "+str(a)+" table:\n---------------------")
         for x,y in zip(home,near):
             if(x==a):
-                print("\t"+x+" -> "+y)
+                print("\t"+x+" --> "+y)
         print("\n")
+    file=open("table.html","w")
+    top='''
+    <html>
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+<body>
+    <div class="container">
+    <h2>Table maintained by the nodes</h2>
+    '''
 
-
+    middle=""
+    for a in nodes:
+        middle+="<h2 >Node "+str(a)+" table </h2>"
+        middle+="<table class='table table-hover'><tr><th align='center'> Source </th> <th> Destination </th></tr>"
+        for x,y in zip(home,near):
+            if(x==a):
+                middle+="<tr><td align='center'>"
+                middle+=x+"</td>"
+                middle+="<td>"
+                middle+=y+"</td></tr>"
+        middle+="</table>"
+    end='''
+    </body>
+    </html>'''
+    file.write(top)
+    file.write(middle)
+    file.write(end)
+    file.close()
 
 def _main_fun(ranges):
     global home
@@ -96,12 +126,12 @@ def _main_fun(ranges):
                     y2=col_class.ypos
                     dist=float(math.sqrt((x2-x1)**2 + (y2-y1)**2))
                     if dist < ranges and dist != 0.0:
-                        row_class.add_node(a)
+                        row_class.add_node(b)
                         home.append(a)
                         near.append(b)
                         print(home)
                         print(near)
-                        
+
 # Main Execution
 print("\tNetwork Stimulation - Nodes : 15")
 print("Enter the PATH from source to destination ( eg: a-b-c-d)")
@@ -119,7 +149,6 @@ if len(q)==l:
     print ("\t* SOURCE NODE : "+str(node_path[0]))
     time.sleep(0.5)
     print ("\t* DESTINATION NODE :"+str(node_path[l-1]))
-
 else:
     print ("\t* Cycle path found ")
     sys.exit()
@@ -128,6 +157,7 @@ print("\t* PATH EXPLORED\n")
 ranges=float(input("Enter the range to identify"))
 _main_fun(ranges)
 show_my_table()
+#print (n1.my_neigh)
 '''
 node_range=input("Enter the node range: ")
 data=input("Enter the data to be transmited from NODE: "+str(node_path[0])+" to NODE: "+str(node_path[l-1])+" :\n")
