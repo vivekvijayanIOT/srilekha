@@ -38,7 +38,7 @@ class node:
         my_neigh=[]
 
     def add_neigh(self,n):
-        
+
 
     def setbuffer__(self,encrypt):
         self.data_buffer=encrypt
