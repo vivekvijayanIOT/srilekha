@@ -65,6 +65,18 @@ def get_class(name):
     class_ID=nodes.index(name)
     return objects[class_ID]
 
+def show_my_table():
+    global home
+    global near
+    for a in nodes:
+        print("Node "+str(a)+" table:\n---------------------")
+        for x,y in zip(home,near):
+            if(x==a):
+                print("\t"+x+" -> "+y)
+        print("\n")
+
+
+
 def _main_fun(ranges):
     global home
     global near
@@ -83,17 +95,13 @@ def _main_fun(ranges):
                     x2=col_class.xpos
                     y2=col_class.ypos
                     dist=float(math.sqrt((x2-x1)**2 + (y2-y1)**2))
-                    print("distance => "+str(dist))
                     if dist < ranges and dist != 0.0:
                         row_class.add_node(a)
-                        print(a+" adds =>" +b +" -----> its distance is "+str(dist))
                         home.append(a)
                         near.append(b)
                         print(home)
                         print(near)
-                        time.sleep(1)
-    
-
+                        
 # Main Execution
 print("\tNetwork Stimulation - Nodes : 15")
 print("Enter the PATH from source to destination ( eg: a-b-c-d)")
@@ -119,7 +127,7 @@ last_node=str(node_path[l-1])
 print("\t* PATH EXPLORED\n")
 ranges=float(input("Enter the range to identify"))
 _main_fun(ranges)
-
+show_my_table()
 '''
 node_range=input("Enter the node range: ")
 data=input("Enter the data to be transmited from NODE: "+str(node_path[0])+" to NODE: "+str(node_path[l-1])+" :\n")
