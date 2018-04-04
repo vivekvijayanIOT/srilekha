@@ -26,10 +26,8 @@ class Graph:
     def __init__(self,vertices):
         #No. of vertices
         self.V= vertices
-
         # default dictionary to store graph
         self.graph = defaultdict(list)
-
     # function to add an edge to graph
     def addEdge(self,u,v):
         self.graph[u].append(v)
@@ -43,8 +41,7 @@ class Graph:
         visited[u]= True
         path.append(u)
         if u ==d:
-            for x in path:
-                print(nodes[x])
+            print(path)
         else:
             for i in self.graph[u]:
                 if visited[i]==False:
@@ -176,8 +173,6 @@ def _main_fun(ranges):
                         row_class.add_node(b)
                         home.append(a)
                         near.append(b)
-                        print(home)
-                        print(near)
 
 # Main Execution
 ranges=float(input("Enter the range to identify"))
@@ -189,35 +184,15 @@ destination_node=str(input("Enter the destination node: "))
 source_index=int(nodes.index(source_node))
 dest_index=int(nodes.index(destination_node))
 
-print(source_index)
-print(dest_index)
-
 g = Graph(15)
 
 for x,y in zip(home,near):
-    print(int(nodes.index(x)))
-    print(int(nodes.index(y)))
     g.addEdge(int(nodes.index(x)),int(nodes.index(y)))
 
 s = source_node ; d = destination_node
 print ("Following are all different paths from %s to %s :" %(s, d))
+ww=[]
 g.printAllPaths(source_index ,dest_index)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 #print (n1.my_neigh)
 '''
