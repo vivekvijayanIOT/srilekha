@@ -6,6 +6,7 @@ import os
 import time
 import math
 
+secret_key="oiuw34h53qv5y0q9834yv50kq3984ugfvq90834mn5g9q348y"
 home=[]
 near=[]
 ec_xpos=[]
@@ -15,6 +16,47 @@ node_path=[]
 
 set_x=[]
 set_y=[]
+
+from collections import defaultdict
+
+#This class represents a directed graph
+# using adjacency list representation
+class Graph:
+
+    def __init__(self,vertices):
+        #No. of vertices
+        self.V= vertices
+
+        # default dictionary to store graph
+        self.graph = defaultdict(list)
+
+    # function to add an edge to graph
+    def addEdge(self,u,v):
+        self.graph[u].append(v)
+
+    '''A recursive function to print all paths from 'u' to 'd'.
+    visited[] keeps track of vertices in current path.
+    path[] stores actual vertices and path_index is current
+    index in path[]'''
+    def printAllPathsUtil(self, u, d, visited, path):
+        nodes=["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O"]
+        visited[u]= True
+        path.append(u)
+        if u ==d:
+            for x in path:
+                print(nodes[x])
+        else:
+            for i in self.graph[u]:
+                if visited[i]==False:
+                    self.printAllPathsUtil(i, d, visited, path)
+        path.pop()
+        visited[u]= False
+
+    def printAllPaths(self,s, d):
+        visited =[False]*(self.V)
+        path = []
+        self.printAllPathsUtil(s, d,visited, path)
+
 
 def action():
     try:
@@ -34,13 +76,19 @@ class node:
     ypos=0
     data_buffer=""
     my_neigh=[]
-
+    key="82734698uy"
     def __init__(self,x_pos,y_pos,name):
         global update_x
         global update_y
         self.xpos=x_pos
         self.ypos=y_pos
         self.name=name
+
+    def update_key(self,k):
+        self.key=k
+
+    def show_key(self):
+        return self.key
 
     def add_node(self,n):
         self.my_neigh.append(n)
@@ -87,7 +135,6 @@ def show_my_table():
     <div class="container">
     <h2>Table maintained by the nodes</h2>
     '''
-
     middle=""
     for a in nodes:
         middle+="<h2 >Node "+str(a)+" table </h2>"
@@ -133,42 +180,54 @@ def _main_fun(ranges):
                         print(near)
 
 # Main Execution
-print("\tNetwork Stimulation - Nodes : 15")
-print("Enter the PATH from source to destination ( eg: a-b-c-d)")
-node_path=input().split('-')
-print("Reading node path.....")
-time.sleep(1)
-print("Status: ")
-l=len(node_path)
-q=set(node_path)
-if len(q)==l:
-    print ("\t* No cycle found")
-    time.sleep(0.5)
-    print ("\t* Number of nodes in path: "+str(l))
-    time.sleep(0.5)
-    print ("\t* SOURCE NODE : "+str(node_path[0]))
-    time.sleep(0.5)
-    print ("\t* DESTINATION NODE :"+str(node_path[l-1]))
-else:
-    print ("\t* Cycle path found ")
-    sys.exit()
-last_node=str(node_path[l-1])
-print("\t* PATH EXPLORED\n")
 ranges=float(input("Enter the range to identify"))
 _main_fun(ranges)
 show_my_table()
+source_node=str(input("Enter the source node: "))
+destination_node=str(input("Enter the destination node: "))
+
+source_index=int(nodes.index(source_node))
+dest_index=int(nodes.index(destination_node))
+
+print(source_index)
+print(dest_index)
+
+g = Graph(15)
+
+for x,y in zip(home,near):
+    print(int(nodes.index(x)))
+    print(int(nodes.index(y)))
+    g.addEdge(int(nodes.index(x)),int(nodes.index(y)))
+
+s = source_node ; d = destination_node
+print ("Following are all different paths from %s to %s :" %(s, d))
+g.printAllPaths(source_index ,dest_index)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 #print (n1.my_neigh)
 '''
 node_range=input("Enter the node range: ")
 data=input("Enter the data to be transmited from NODE: "+str(node_path[0])+" to NODE: "+str(node_path[l-1])+" :\n")
 # data encryption starts here
-
-
 # encryption ends here
 # @ node traversal
 try:
     print ("\nStarting from Node "+str(node_path[0]))
-
     for node in node_path:
         if node != last_node:
             print ("\t----------NODE "+str(node)+"-----------")
