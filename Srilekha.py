@@ -5,10 +5,12 @@ import sys
 import os
 import time
 import math
+totalinc=0
 
 secret_key="oiuw34h53qv5y0q9834yv50kq3984ugfvq90834mn5g9q348y"
 home=[]
 near=[]
+element=[]
 ec_xpos=[]
 ec_ypos=[]
 nodes=["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O"]
@@ -19,10 +21,8 @@ set_y=[]
 
 from collections import defaultdict
 
-#This class represents a directed graph
-# using adjacency list representation
 class Graph:
-
+    inc=0
     def __init__(self,vertices):
         #No. of vertices
         self.V= vertices
@@ -37,11 +37,21 @@ class Graph:
     path[] stores actual vertices and path_index is current
     index in path[]'''
     def printAllPathsUtil(self, u, d, visited, path):
+        global element
+        global totalinc
         nodes=["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O"]
         visited[u]= True
+        self.inc
+        global element
         path.append(u)
         if u ==d:
-            print(path)
+            element.append([])
+            for a in path:
+#                print(nodes[a],sep=" ",end='->')
+                element[self.inc].append(nodes[a])
+            print("\n")
+            totalinc=self.inc
+            self.inc=self.inc+1
         else:
             for i in self.graph[u]:
                 if visited[i]==False:
@@ -80,6 +90,7 @@ class node:
         self.xpos=x_pos
         self.ypos=y_pos
         self.name=name
+
 
     def update_key(self,k):
         self.key=k
@@ -193,15 +204,42 @@ s = source_node ; d = destination_node
 print ("Following are all different paths from %s to %s :" %(s, d))
 ww=[]
 g.printAllPaths(source_index ,dest_index)
-
-#print (n1.my_neigh)
-'''
-node_range=input("Enter the node range: ")
-data=input("Enter the data to be transmited from NODE: "+str(node_path[0])+" to NODE: "+str(node_path[l-1])+" :\n")
-# data encryption starts here
-# encryption ends here
-# @ node traversal
+print("Setting up....\n\n")
 try:
+    print("The possible path from source to destination\n")
+    for a in range(0,totalinc+1):
+        for b in element[a]:
+            print(b,end="-")
+        print("\n")
+
+    print("Finding shortest path")
+    temp=100
+    shortest_b_index=0
+    for a in range(0,totalinc+1):
+        temp_l=len(element[a])
+        if(temp_l<temp):
+            temp=temp_l
+            shortest_b_index=element.index(element[a])
+
+    print("\nShortest path is : \n")
+
+    for b in element[shortest_b_index]:
+        print(b,end="-")
+    print("\n")
+    print("\n")
+
+
+
+except:
+    print("NO route available => HINT: Change the range and retry !! ")
+try:
+    data=input("Enter the data to be transmited from NODE: :\n")
+    # data encryption starts here
+    # encryption ends here
+    # @ node traversal
+    node_path=list(element[shortest_b_index])
+    last_node=destination_node
+
     print ("\nStarting from Node "+str(node_path[0]))
     for node in node_path:
         if node != last_node:
@@ -212,7 +250,7 @@ try:
             obj.setbuffer__(data)
             index=int(node_path.index(node))
             print ("\tNode position: X = "+str(obj.xpos)+ " Y = "+str(obj.ypos))
-            try:
+            '''try:
                 temp_id1=ec_xpos.index(obj.xpos)
                 temp_id2=ec_ypos.index(obj.ypos)
                 if temp_id1==temp_id2:
@@ -223,7 +261,7 @@ try:
             except:
                 print ("\tReplica node !!! Not in Elliptical curve")
                 print ("\tData not sent to Destination\n\t\tSending Failed !")
-                sys.exit()
+                sys.exit()'''
 
             print ("\tData sending to Node:"+str(node_path[index+1])+"")
             for a in range(0,20):
@@ -241,7 +279,7 @@ try:
             obj.setbuffer__(data)
             index=int(node_path.index(node))
             print ("\tNode position: X = "+str(obj.xpos)+ " Y = "+str(obj.ypos))
-            try:
+            '''try:
                 temp_id1=ec_xpos.index(obj.xpos)
                 temp_id2=ec_ypos.index(obj.ypos)
                 if temp_id1==temp_id2:
@@ -252,7 +290,7 @@ try:
             except:
                 print ("\tReplica node !!! Not in Elliptical curve")
                 print ("\tData not sent to Destination\n\t\tSending Failed !")
-                sys.exit()
+                sys.exit()'''
 
             for a in range(0,20):
                 b = "\t\tDecrypting [" + "+-" * a +"]"
@@ -260,6 +298,6 @@ try:
                 time.sleep(0.1)
             print("\n")
             time_slot(1)
+    print("Transimission successfull")
 except:
-    print("")
-    '''
+    print("Transmission failed")
