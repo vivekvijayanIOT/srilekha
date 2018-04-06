@@ -1,4 +1,5 @@
 print("** Network Stimulation code starts **")
+print("Network Developed: 15 nodes\n")
 # VivekIOT - Python code : date-> 24-3-2018
 # NS - Srilekha
 import sys
@@ -6,6 +7,7 @@ import os
 import time
 import math
 totalinc=0
+
 
 secret_key="oiuw34h53qv5y0q9834yv50kq3984ugfvq90834mn5g9q348y"
 home=[]
@@ -16,6 +18,7 @@ ec_ypos=[]
 nodes=["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O"]
 node_path=[]
 
+clone_identified=[]
 set_x=[]
 set_y=[]
 
@@ -91,9 +94,9 @@ class node:
         self.ypos=y_pos
         self.name=name
 
-
     def update_key(self,k):
         self.key=k
+        print("Updated")
 
     def show_key(self):
         return self.key
@@ -186,7 +189,11 @@ def _main_fun(ranges):
                         near.append(b)
 
 # Main Execution
-ranges=float(input("Enter the range to identify"))
+
+
+
+
+ranges=float(input("Enter the range to identify : "))
 _main_fun(ranges)
 show_my_table()
 source_node=str(input("Enter the source node: "))
@@ -228,10 +235,19 @@ try:
     print("\n")
     print("\n")
 
-
-
 except:
     print("NO route available => HINT: Change the range and retry !! ")
+x_clone=100
+y_clone=100
+print("Do you want to add a clone node?")
+choice=int(input("Enter 1 to add clone, 0 to do it without clone"))
+if(choice==1):
+    x_clone=int(input("Enter the xpos of clone"))
+    y_clone=int(input("Enter the ypos of clone"))
+    clone=node(x_clone,y_clone,"X")
+    print("node generated")
+    print("My default key:"+str(clone.key))
+
 try:
     data=input("Enter the data to be transmited from NODE: :\n")
     # data encryption starts here
@@ -239,6 +255,8 @@ try:
     # @ node traversal
     node_path=list(element[shortest_b_index])
     last_node=destination_node
+    print("Anchor node=> Distributed the key to "+str(source_node))
+    print("KEY: "+str(secret_key))
 
     print ("\nStarting from Node "+str(node_path[0]))
     for node in node_path:
@@ -249,6 +267,24 @@ try:
             obj=get_class(node_name)
             obj.setbuffer__(data)
             index=int(node_path.index(node))
+            print("Distributing key to my neighbour: \n ****************")
+
+            for a,b in zip(home,near):
+                if(a==node):
+                    ids=int(home.index(a))
+                    class_name=get_class(b)
+                    print("Sending key to node "+b+ ": Key => "+str(secret_key))
+                    class_name.update_key(str(secret_key))
+                    print("Getting back key : Success")
+            if(x_clone<50):
+                x1=obj.xpos
+                y1=obj.ypos
+                new_dist=float(math.sqrt((x_clone-x1)**2 + (y_clone-y1)**2))
+                if(new_dist<ranges):
+                    print("Getting back key: Failed \t Key :"+str(clone.key)+" doesnt match")
+                    print("*** CLONE NODE IDENTIFIED ***")
+                    clone_identified.append(node)
+
             print ("\tNode position: X = "+str(obj.xpos)+ " Y = "+str(obj.ypos))
             '''try:
                 temp_id1=ec_xpos.index(obj.xpos)
@@ -293,11 +329,17 @@ try:
                 sys.exit()'''
 
             for a in range(0,20):
-                b = "\t\tDecrypting [" + "+-" * a +"]"
+                b = "\t\tDecrypting [" + "*" * a +"]"
                 print(b,end="\r")
                 time.sleep(0.1)
+
             print("\n")
+            print("Message recieved at destination:" +str(data))
             time_slot(1)
     print("Transimission successfull")
+    if(len(clone_identified)>1):
+        print("But Clone is identified at the range of ")
+        for e in clone_identified:
+            print("At node : "+str(e))
 except:
     print("Transmission failed")
