@@ -6,14 +6,18 @@ import sys
 import os
 import time
 import math
+import random
+import base64
+import binascii
+
 totalinc=0
-
-
-secret_key="oiuw34h53qv5y0q9834yv50kq3984ugfvq90834mn5g9q348y"
+rint=( binascii.hexlify(os.urandom(24))).decode("utf-8")
+print("Key that anchor node has: "+str(rint))
+secret_key=str(rint)
 home=[]
 near=[]
 element=[]
-ec_xpos=[] 
+ec_xpos=[]
 ec_ypos=[]
 nodes=["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O"]
 node_path=[]
@@ -86,7 +90,7 @@ class node:
     ypos=0
     data_buffer=""
     my_neigh=[]
-    key="82734698uy"
+    key=( binascii.hexlify(os.urandom(24))).decode("utf-8")
     def __init__(self,x_pos,y_pos,name):
         global update_x
         global update_y
@@ -119,6 +123,17 @@ n6,n7,n8,n9,n10=node(2,2,"F"),node(3,7,"G"),node(4,14,"H"),node(-2,9,"I"),node(2
 n11,n12,n13,n14,n15=node(2,8,"K"),node(-1,3,"L"),node(4,2,"M"),node(-4,5,"N"),node(-3,14,"O")
 
 objects=[n1,n2,n3,n4,n5,n6,n7,n8,n9,n10,n11,n12,n13,n14,n15]
+
+import matplotlib.pyplot as p
+plot_x=[0,-1,-2,-3,-4,2,3,4,-2,2,2,-1,4,-4,-3]
+plot_y=[-2,-1,2,7,14,2,7,14,9,14,8,3,2,5,14]
+print("Node generated plotting")
+p.plot(plot_x,plot_y,'go')
+p.title("Node Arrangement: Static")
+for x,y,name in zip(plot_x,plot_y,nodes):
+    p.text(x+0.2,y,name)
+p.show()
+
 
 def get_class(name):
     class_ID=nodes.index(name)
@@ -244,7 +259,8 @@ choice=int(input("Enter 1 to add clone, 0 to do it without clone"))
 if(choice==1):
     x_clone=int(input("Enter the xpos of clone"))
     y_clone=int(input("Enter the ypos of clone"))
-    clone=node(x_clone,y_clone,"X")
+    clone_name=str(input("Enter the node name: "))
+    clone=node(x_clone,y_clone,clone_name)
     print("node generated")
     print("My default key:"+str(clone.key))
 
@@ -273,7 +289,7 @@ try:
                 if(a==node):
                     ids=int(home.index(a))
                     class_name=get_class(b)
-                    print("Sending key to node "+b+ ": Key => "+str(secret_key))
+                    print("Sending key to node "+b+ ": Key => "+str((secret_key)))
                     class_name.update_key(str(secret_key))
                     print("Getting back key : Success")
             if(x_clone<50):
@@ -282,7 +298,7 @@ try:
                 new_dist=float(math.sqrt((x_clone-x1)**2 + (y_clone-y1)**2))
                 if(new_dist<ranges):
                     print("Getting back key: Failed \t Key :"+str(clone.key)+" doesnt match")
-                    print("*** CLONE NODE IDENTIFIED ***")
+                    print("*** CLONE NODE IDENTIFIED ***\nNode name: "+clone_name)
                     clone_identified.append(node)
 
             print ("\tNode position: X = "+str(obj.xpos)+ " Y = "+str(obj.ypos))
@@ -327,7 +343,6 @@ try:
                 print ("\tReplica node !!! Not in Elliptical curve")
                 print ("\tData not sent to Destination\n\t\tSending Failed !")
                 sys.exit()'''
-
             for a in range(0,20):
                 b = "\t\tDecrypting [" + "*" * a +"]"
                 print(b,end="\r")
@@ -341,5 +356,12 @@ try:
         print("But Clone is identified at the range of ")
         for e in clone_identified:
             print("At node : "+str(e))
+        p.plot(plot_x,plot_y,'go')
+        p.plot(x_clone,y_clone,'ro')
+        p.title("Clone Identified: Static")
+        for x,y,name in zip(plot_x,plot_y,nodes):
+            p.text(x+0.2,y,name)
+        p.text(x_clone+0.2,y_clone,"CLONE")
+        p.show()
 except:
     print("Transmission failed")
