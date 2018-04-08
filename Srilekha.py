@@ -10,6 +10,7 @@ import random
 import base64
 import binascii
 
+times=0
 totalinc=0
 rint=( binascii.hexlify(os.urandom(24))).decode("utf-8")
 print("Key that anchor node has: "+str(rint))
@@ -292,6 +293,7 @@ try:
                     print("Sending key to node "+b+ ": Key => "+str((secret_key)))
                     class_name.update_key(str(secret_key))
                     print("Getting back key : Success")
+            times+=0.8
             if(x_clone<50):
                 x1=obj.xpos
                 y1=obj.ypos
@@ -300,6 +302,7 @@ try:
                     print("Getting back key: Failed \t Key :"+str(clone.key)+" doesnt match")
                     print("*** CLONE NODE IDENTIFIED ***\nNode name: "+clone_name)
                     clone_identified.append(node)
+                    times+=1.5
 
             print ("\tNode position: X = "+str(obj.xpos)+ " Y = "+str(obj.ypos))
             '''try:
@@ -347,11 +350,12 @@ try:
                 b = "\t\tDecrypting [" + "*" * a +"]"
                 print(b,end="\r")
                 time.sleep(0.1)
-
+            times+=1
             print("\n")
             print("Message recieved at destination:" +str(data))
             time_slot(1)
     print("Transimission successfull")
+    print("Total Time taken: "+str(times)+"sec")
     if(len(clone_identified)>1):
         print("But Clone is identified at the range of ")
         for e in clone_identified:
@@ -365,3 +369,4 @@ try:
         p.show()
 except:
     print("Transmission failed")
+    print("Total Time taken: "+str(times)+"sec")
